@@ -1,0 +1,12 @@
+{{extend './manager/layout.html'}}
+
+{{block 'content'}}
+<h1>hello I'm your Daddy</h1>
+<ul>
+    <li class="strong">书籍数量：{{data.book_count}}</li>
+    <li class="strong">书籍副本数量：{{data.book_instance_count}}</li>
+    <li class="strong">可借阅数量：{{data.book_instance_available_count}}</li>
+    <li class="strong">作者数量：{{data.author_count}}</li>
+    <li class="strong">种类数量：{{data.genre_count}}</li>
+</ul>
+{{/block}}

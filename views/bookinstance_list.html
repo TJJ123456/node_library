@@ -1,0 +1,14 @@
+{{extend './manager/layout.html'}}
+
+{{block 'content'}}
+<h1>书本列表</h1>
+<ul>
+    {{each bookinstance_list}}
+    <li class="strong">
+        <a href="{{$value.url}}">{{$value.book.title}}:</a>
+        {{$value.imprint}}
+        [{{$value.status}}]
+    </li>
+    {{/each}}
+</ul>
+{{/block}}

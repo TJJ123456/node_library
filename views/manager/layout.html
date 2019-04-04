@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>library</title>
+
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/public/css/dashboard.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Project name</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#">Dashboard</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-3 col-md-2 sidebar">
+                <ul class="nav nav-sidebar">
+                    <li class="active"><a href="#">主页</a></li>
+                    <li><a href="/catalog/books">书籍目录</a></li>
+                    <li><a href="#">作者目录</a></li>
+                    <li><a href="#">种类目录</a></li>
+                    <li><a href="/catalog/bookinstances">书籍实例目录</a></li>
+                </ul>
+                <ul class="nav nav-sidebar">
+                    <li><a href="">新建作者</a></li>
+                    <li><a href="">新建种类</a></li>
+                    <li><a href="">新建书本</a></li>
+                    <li><a href="">增加书本实例</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                {{block 'error'}}
+                {{/block}}
+                {{block 'content'}}
+                {{/block}}
+                <button id="test">测试</button>
+                <div id="my-id"></div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/node_modules/art-template/lib/template-web.js"></script>
+    <script type="text/html" id="template-mod">
+        <h1>书本列表</h1>
+            <ul>
+                {{each bookinstance_list}}
+                <li class="strong">
+                    111
+                    <!-- <a href="{{$value.url}}">{{$value.book.title}}:</a>
+                    {{$value.imprint}}
+                    [{{$value.status}}] -->
+                </li>
+                {{/each}}
+            </ul>
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#test').click(function () {
+                $.ajax({
+                    url: 'http://localhost:3000/catalog/bookinstances',
+                    type: 'GET',
+                    success: function (data) {
+                        console.log(data);
+                        var html = template("template-mod", data);
+                        document.getElementById('my-id').innerHTML = html;
+                    }
+                })
+            })
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,26 @@
+{
+  "name": "nlibrary",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "art-template": "^4.13.2",
+    "async": "^2.6.2",
+    "connect-flash": "^0.1.1",
+    "connect-mongo": "^2.0.3",
+    "cookie-parser": "^1.4.4",
+    "express": "^4.16.4",
+    "express-art-template": "^1.0.1",
+    "express-session": "^1.15.6",
+    "flash": "^1.1.0",
+    "http-errors": "^1.7.2",
+    "mongoose": "^5.4.20",
+    "morgan": "^1.9.1"
+  }
+}
