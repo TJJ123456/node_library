@@ -39,8 +39,8 @@
             <div class="col-sm-3 col-md-2 sidebar">
                 <ul class="nav nav-sidebar">
                     <li class="active"><a href="#">主页</a></li>
-                    <li><a href="#">书籍目录</a></li>
-                    <li><a href="#">作者目录</a></li>
+                    <li><a href="#" onclick="getBookList()">书籍目录</a></li>
+                    <li><a href="#" onclick="getAuthorList()">作者目录</a></li>
                     <li><a href="#">种类目录</a></li>
                     <li><a href="#">书籍实例目录</a></li>
                 </ul>
@@ -76,7 +76,12 @@
                     console.log(data);
                 }
             })
+            
         })
+        function test() {
+            event.preventDefault();
+            console.log('hahaha')
+        }
     </script>
 </body>
 
