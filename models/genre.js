@@ -14,4 +14,4 @@ GenreSchema
     });
 
 // 导出 model.
-exports.Genre = mongoose.model('Genre', GenreSchema);
+module.exports = mongoose.model('Genre', GenreSchema);

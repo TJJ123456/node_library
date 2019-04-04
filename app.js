@@ -20,9 +20,14 @@ db.on('error', console.error.bind(console, 'MongoDB 连接错误：'));
 //设置模板目录
 app.engine('.html', require('express-art-template'));
 app.set('views', path.join(__dirname, 'views'));
-app.use('/public',express.static(path.join(__dirname, 'public')));
-app.use('/node_modules',express.static(path.join(__dirname, 'node_modules')));
+//设置公共目录
+app.use('/public', express.static(path.join(__dirname, 'public')));
+app.use('/node_modules', express.static(path.join(__dirname, 'node_modules')));
 app.use(express.static(path.join(__dirname, 'views')));
+
+//设置管理员目录
+app.use('/manager', express.static(path.join(__dirname, 'public/managerviews')));
+
 app.use(session({
     name: 'nlibrary',
     secret: 'nlibrary',
@@ -47,10 +52,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/catalog', catalogRouter);  // 将 catalog 路由添加进中间件链
+// app.use('/users', usersRouter);
+const managerCheckLogin = require('./check/managerCheck').checkLogin;
+app.use('/catalog', managerCheckLogin, catalogRouter);  // 管理员权限导航
 
 app.listen(3000, function () {
     console.log('nlibrary running...');

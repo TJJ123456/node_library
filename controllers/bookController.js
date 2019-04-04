@@ -18,15 +18,22 @@ exports.index = function (req, res, next) {
         const author_count = result[3];
         const genre_count = result[4];
 
-        res.render('manager.html', {
-            title: 'My Library',
-            data: {
-                book_count: book_count,
-                book_instance_count: book_instance_count,
-                book_instance_available_count: book_instance_available_count,
-                author_count: author_count,
-                genre_count: genre_count
-            }
+        // res.render('manager.html', {
+        //     title: 'My Library',
+        //     data: {
+        //         book_count: book_count,
+        //         book_instance_count: book_instance_count,
+        //         book_instance_available_count: book_instance_available_count,
+        //         author_count: author_count,
+        //         genre_count: genre_count
+        //     }
+        // })
+        res.json({
+            book_count: book_count,
+            book_instance_count: book_instance_count,
+            book_instance_available_count: book_instance_available_count,
+            author_count: author_count,
+            genre_count: genre_count
         })
     }).catch(next);
 }

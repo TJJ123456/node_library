@@ -17,4 +17,4 @@ BookSchema
     });
 
 // 导出 Book 模块
-exports.Book = mongoose.model('Book', BookSchema);
+module.exports = mongoose.model('Book', BookSchema);

@@ -32,4 +32,4 @@ AuthorSchema
     });
 
 // 导出 Author 模型
-exports.Author = mongoose.model('Author', AuthorSchema);
+module.exports = mongoose.model('Author', AuthorSchema);

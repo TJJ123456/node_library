@@ -24,4 +24,4 @@ BookInstanceSchema
     });
 
 // 导出 BookInstance 模型
-exports.BookInstance = mongoose.model('BookInstance', BookInstanceSchema);
+module.exports = mongoose.model('BookInstance', BookInstanceSchema);
