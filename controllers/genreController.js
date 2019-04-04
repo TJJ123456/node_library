@@ -3,7 +3,7 @@ const BookModel = require('../models/book');
 
 //展示种类列表
 exports.genre_list = function (req, res, next) {
-    GenreModel.getGenreList().then(result => {
+    GenreModel.find().then(result => {
         console.log(result);
         res.send('这是种类列表');
         // res.render('genre_list', {
@@ -17,8 +17,8 @@ exports.genre_list = function (req, res, next) {
 exports.genre_detail = async function (req, res, next) {
     const genreId = req.params.id;
     try {
-        const genre = await GenreModel.getGenreById(genreId);
-        const genre_books = await BookModel.getBookByGenreId(genreId);
+        const genre = await GenreModel.findById(genreId);
+        const genre_books = await BookModel.find({ 'genre': genreId });
         if (!genre) {
             throw new Error('没这个种类');
         }
@@ -50,7 +50,7 @@ exports.genre_create_post = function (req, res, next) {
         req.flash('error', e.message)
         return res.redirect('back');
     }
-    GenreModel.getGenreByName(name).then(result => {
+    GenreModel.findOne({ name: name }).then(result => {
         if (result) {
             res.redirect(found_genre.url);
         } else {
@@ -63,8 +63,8 @@ exports.genre_create_post = function (req, res, next) {
 exports.genre_delete_get = async function (req, res, next) {
     const genreId = req.params.id;
     try {
-        const genre = await GenreModel.getGenreById(genreId);
-        const genre_books = await BookModel.getBookByGenreId(genreId);
+        const genre = await GenreModel.findById(genreId);
+        const genre_books = await BookModel.find({ 'genre': genreId });
         if (!genre) {
             res.redirect('/catalog/genres');
         } else {
@@ -84,8 +84,8 @@ exports.genre_delete_get = async function (req, res, next) {
 exports.genre_delete_post = async function (req, res, next) {
     const genreId = req.params.id;
     try {
-        const genre = await GenreModel.getGenreById(genreId);
-        const genre_books = await BookModel.getBookByGenreId(genreId);
+        const genre = await GenreModel.findById(genreId);
+        const genre_books = await BookModel.find({ 'genre': genreId });
         if (genre_books.length > 0) {
             // Genre has books. Render in same way as for GET route.
             res.render('genre_delete', {
@@ -95,7 +95,7 @@ exports.genre_delete_post = async function (req, res, next) {
             });
             return;
         } else {
-            await GenreModel.removeById(genreId);
+            await GenreModel.findByIdAndRemove(genreId);
             res.redirect('/catalog/genres');
         }
     } catch (e) {
@@ -107,7 +107,7 @@ exports.genre_delete_post = async function (req, res, next) {
 //更新种类页面
 exports.genre_update_get = function (req, res, next) {
     const genreId = req.params.id;
-    GenreModel.getGenreById(genreId).then(result => {
+    GenreModel.findById(genreId).then(result => {
         console.log(result);
         res.send('种类');
         // res.render('genre_form', { title: 'Update Genre', genre: genre });
@@ -133,7 +133,7 @@ exports.genre_update_post = function (req, res, next) {
         _id: id
     }
 
-    GenreModel.updateById(genreId, genre).then(result => {
+    GenreModel.findByIdAndUpdate(genreId, genre).then(result => {
         console.log(result);
         res.send('更新种类成功了？');
         // res.redirect()

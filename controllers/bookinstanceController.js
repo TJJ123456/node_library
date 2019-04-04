@@ -3,7 +3,7 @@ const BookModel = require('../models/book');
 
 //获取书本实例信息
 exports.bookinstance_list = function (req, res, next) {
-    BookInstanceModel.getBookInstanceList().then(result => {
+    BookInstanceModel.find().populate('book').then(result => {
         console.log(result);
         let data = JSON.stringify(result);
         data = JSON.parse(data);
@@ -20,7 +20,7 @@ exports.bookinstance_list = function (req, res, next) {
 //书本实例详情页面
 exports.bookinstance_detail = function (req, res, next) {
     const id = req.params.id;
-    BookInstanceModel.getBookInstanceInfoById(id).then(result => {
+    BookInstanceModel.find(id).populate('book').then(result => {
         console.log(result);
         // res.render('bookinstance_delete', {
         //     title: 'Delete BookInstance',
@@ -32,7 +32,7 @@ exports.bookinstance_detail = function (req, res, next) {
 
 //创建书本实例页面
 exports.bookinstance_create_get = function (req, res, next) {
-    BookModel.getBookList('title').then(result => {
+    BookModel.find({}, 'title').populate('author').then(result => {
         res.send('书本信息');
         // res.render('bookinstance_form', {
         //     title: 'Create BookInstance',
@@ -75,7 +75,7 @@ exports.bookinstance_create_post = function (req, res, next) {
 //删除书本实例页面
 exports.bookinstance_delete_get = function (req, res, next) {
     const id = req.params.id;
-    BookInstanceModel.getBookInstanceInfoById(id).then(result => {
+    BookInstanceModel.find(id).populate('book').then(result => {
         console.log(result);
         // res.render('bookinstance_delete', {
         //     title: 'Delete BookInstance',
@@ -88,7 +88,7 @@ exports.bookinstance_delete_get = function (req, res, next) {
 //删除书本实例请求
 exports.bookinstance_delete_post = function (req, res, next) {
     const id = req.params.id;
-    BookInstanceModel.removeById(id).then(result => {
+    BookInstanceModel.findByIdAndRemove(id).then(result => {
         console.log(result);
         // res.redirect('/catalog/bookinstances');
         res.send('删除成功');
@@ -99,8 +99,8 @@ exports.bookinstance_delete_post = function (req, res, next) {
 exports.bookinstance_update_get = async function (req, res, next) {
     const id = req.params.id;
     try {
-        const bookinstance = await BookInstanceModel.getBookInstanceInfoById(id);
-        const books = await BookModel.getBookList();
+        const bookinstance = await BookInstanceModel.find(id).populate('book');
+        const books = await BookModel.find({}, params).populate('author');
         if (!bookinstance) {
             throw new Error('没这书');
         }
@@ -146,7 +146,7 @@ exports.bookinstance_update_post = function (req, res, next) {
         _id: id
     }
 
-    BookInstanceModel.updateById(id, bookinstance).then(result => {
+    BookInstanceModel.findByIdAndUpdate(id, bookinstance).then(result => {
         console.log(result);
         res.send('更新实例成功');
         // res.redirect(thebookinstance.url);

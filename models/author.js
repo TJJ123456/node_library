@@ -32,27 +32,4 @@ AuthorSchema
     });
 
 // 导出 Author 模型
-const Author = mongoose.model('Author', AuthorSchema);
-
-module.exports = {
-    getAuthorList: function getAuthorList() {
-        return Author.find({}).exec();
-    },
-    getAuthorById: function getAuthorById(authorId) {
-        return Author.findById(authorId).exec();
-    },
-    create: function create(author) {
-        return Author.create(author);
-    },
-    removeById: function removeBookById(authorId) {
-        return Author.findByIdAndRemove(authorId).exec();
-    },
-    //通过id更新作者信息
-    updateById(authorId, author) {
-        return Author.updateById(authorId, author).exec();
-    },
-    //获取作者总数
-    getAuthorCount() {
-        return Author.countDocuments().exec();
-    }
-}
+exports.Author = mongoose.model('Author', AuthorSchema);

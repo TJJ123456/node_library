@@ -24,37 +24,4 @@ BookInstanceSchema
     });
 
 // 导出 BookInstance 模型
-const BookInstance = mongoose.model('BookInstance', BookInstanceSchema);
-module.exports = {
-    //通过书本id获取书籍实例
-    getByBookId: function getByBookId(bookId) {
-        return BookInstance.find({ book: bookId }).exec();
-    },
-    //书本实例总数
-    getBookInstanceCount() {
-        return BookInstance.countDocuments().exec();
-    },
-    //获取可借阅书本数量
-    getAvailableCount() {
-        return BookInstance.countDocuments({ status: '可供借阅' }).exec();
-    },
-    //获取所有书本实例
-    getBookInstanceList() {
-        return BookInstance.find().populate('book');
-    },
-    //创建书本
-    create(bookinstance) {
-        return BookInstance.create(bookinstance);
-    },
-    //获取单个书本实例信息
-    getBookInstanceInfoById(bookinstanceId) {
-        return BookInstance.find(bookinstanceId).populate('book').exec();
-    },
-    //通过id删除书本实例
-    removeById(bookinstanceId) {
-        return BookInstance.findByIdAndRemove(bookinstanceId).exec();
-    },
-    updateById(bookinstanceId, bookinstance) {
-        return BookInstance.findByIdAndUpdate(bookinstanceId, bookinstance);
-    }
-}
+exports.BookInstance = mongoose.model('BookInstance', BookInstanceSchema);

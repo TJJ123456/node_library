@@ -6,11 +6,11 @@ const BookInstanceModel = require('../models/bookinstance');
 //主页
 exports.index = function (req, res, next) {
     Promise.all([
-        BookModel.getBookCount(),
-        BookInstanceModel.getBookInstanceCount(),
-        BookInstanceModel.getAvailableCount(),
-        AuthorModel.getAuthorCount(),
-        GenreModel.getGenreCount()
+        BookModel.countDocuments(),
+        BookInstanceModel.countDocuments(),
+        BookInstanceModel.countDocuments({ status: '可供借阅' }),
+        AuthorModel.countDocuments(),
+        GenreModel.countDocuments()
     ]).then(result => {
         const book_count = result[0];
         const book_instance_count = result[1];
@@ -33,7 +33,7 @@ exports.index = function (req, res, next) {
 
 //展示所有书本
 exports.book_list = function (req, res, next) {
-    BookModel.getBookList('title author').then(result => {
+    BookModel.find({}, 'title author').populate('author').then(result => {
         // console.log(result);
         // res.send('书本列表');
         res.render('book_list.html', {
@@ -47,8 +47,8 @@ exports.book_list = function (req, res, next) {
 exports.book_detail = function (req, res, next) {
     const bookId = req.params.id;
     Promise.all([
-        BookModel.getBookEveryThingById(bookId),
-        BookInstanceModel.getByBookId(bookId)
+        BookModel.findById(bookId).populate('author').populate('genre'),
+        BookInstanceModel.find({ book: bookId })
     ]).then(result => {
         const book = result[0];
         const book_instance = result[1];
@@ -70,8 +70,8 @@ exports.book_detail = function (req, res, next) {
 //创建书本页面
 exports.book_create_get = function (req, res, next) {
     Promise.all([
-        AuthorModel.getAuthorList(),
-        GenreModel.getGenreList()
+        AuthorModel.find(),
+        GenreModel.find()
     ]).then(result => {
         const authors = result[0];
         const genres = result[1];
@@ -134,8 +134,8 @@ exports.book_create_post = function (req, res, next) {
 exports.book_delete_get = function (req, res, next) {
     const bookId = req.params.id;
     Promise.all([
-        BookModel.getBookEveryThingByAuthorId(bookId),
-        BookInstanceModel.getByBookId(bookId)
+        BookModel.findById(bookId).populate('author').populate('genre'),
+        BookInstanceModel.find({ book: bookId })
     ]).then(result => {
         const book = result[0];
         const book_bookinstances = result[1];
@@ -154,8 +154,8 @@ exports.book_delete_get = function (req, res, next) {
 exports.book_delete_post = (req, res, next) => {
     const bookId = req.params.id;
     Promise.all([
-        BookModel.getBookEveryThingByAuthorId(bookId),
-        BookInstanceModel.getByBookId(bookId)
+        BookModel.findById(bookId).populate('author').populate('genre'),
+        BookInstanceModel.find({ book: bookId })
     ]).then(result => {
         const book = result[0];
         const book_bookinstances = result[1];
@@ -167,7 +167,7 @@ exports.book_delete_post = (req, res, next) => {
             });
             return;
         } else {
-            BookModel.removeBookById(bookId).then(result => {
+            BookModel.findByIdAndRemove(bookId).then(result => {
                 res.redirect('/catalog/books');
             })
         }
@@ -178,9 +178,9 @@ exports.book_delete_post = (req, res, next) => {
 exports.book_update_get = function (req, res, next) {
     const bookId = req.params.id;
     Promise.all([
-        BookModel.getBookEveryThingById(bookId),
-        AuthorModel.getAuthorList(),
-        GenreModel.getGenreList()
+        BookModel.findById(bookId).populate('author').populate('genre'),
+        AuthorModel.find(),
+        GenreModel.find()
     ]).then(result => {
         const book = result[0];
         const authors = result[1];
@@ -244,7 +244,7 @@ exports.book_update_post = function (req, res, next) {
         genre: (typeof req.fields.genre === 'undefined') ? [] : req.fields.genre,
         _id: req.params.id // 
     }
-    BookModel.updateById(bookId, book).then(result => {
+    BookModel.findByIdAndUpdate(bookId, book).then(result => {
         console.log(result);
         res.send('更新书本成功');
     })

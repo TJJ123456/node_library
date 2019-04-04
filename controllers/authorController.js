@@ -5,7 +5,7 @@ const BookInstanceModel = require('../models/bookinstance');
 //显示完整的作者列表
 exports.author_list = (req, res, next) => {
     //按名字排序
-    AuthorModel.getAuthorList().then((result) => {
+    AuthorModel.Author.find().then((result) => {
         result.sort((a, b) => a.family_name > b.family_name);
         console.log(result);
         // res.render('author_list.html', {
@@ -20,8 +20,8 @@ exports.author_list = (req, res, next) => {
 exports.author_detail = (req, res, next) => {
     const authorId = req.params.id;
     Promise.all([
-        AuthorModel.getAuthorById(authorId),
-        BookModel.getBookByAuthorId(authorId, 'title summary')
+        AuthorModel.findById(authorId),
+        BookModel.find({ 'author': authorId }, 'title summary')
     ]).then((result) => {
         const author = result[0];//作者信息
         const author_books = result[1];//作者的书的信息
@@ -76,8 +76,8 @@ exports.author_create_post = (req, res, next) => {
 exports.author_delete_get = (req, res, next) => {
     const authorId = req.params.id;
     Promise.all([
-        AuthorModel.getAuthorById(authorId),
-        BookModel.getBookByAuthorId(authorId)
+        AuthorModel.findById(authorId),
+        BookModel.find({ 'author': authorId })
     ]).then(result => {
         const author = result[0];
         const author_books = result[1];
@@ -96,8 +96,8 @@ exports.author_delete_get = (req, res, next) => {
 exports.author_delete_post = (req, res, next) => {
     const authorId = req.params.id;
     Promise.all([
-        AuthorModel.getAuthorById(authorId),
-        BookModel.getBookByAuthorId(authorId)
+        AuthorModel.findById(authorId),
+        BookModel.getBookByAuthorId({ 'author': authorId })
     ]).then(result => {
         const author = result[0];
         const author_books = result[1];
@@ -109,7 +109,7 @@ exports.author_delete_post = (req, res, next) => {
             });
             return;
         } else {
-            AuthorModel.removeById(authorId).then(result => {
+            AuthorModel.findByIdAndRemove(authorId).then(result => {
                 res.redirect('/catalog/authors');
             })
         }
@@ -119,7 +119,7 @@ exports.author_delete_post = (req, res, next) => {
 // 由 GET 显示更新作者的表单
 exports.author_update_get = (req, res, next) => {
     const authorId = req.params.id;
-    AuthorModel.getAuthorById(authorId).then(result => {
+    AuthorModel.findById(authorId).then(result => {
         console.log(result);
         res.send('看日志更新作者表单');
     }).catch(next(err));
@@ -152,7 +152,7 @@ exports.author_update_post = (req, res, next) => {
         date_of_death: date_of_death,
         _id: authorId
     }
-    AuthorModel.updateById(authorId, author).then(result => {
+    AuthorModel.findByIdAndUpdate(authorId, author).then(result => {
         console.log(result);
         res.send('更新作者信息ID');
     })
