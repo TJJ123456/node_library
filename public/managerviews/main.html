@@ -13,7 +13,6 @@
 </head>
 
 <body>
-
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -28,7 +27,7 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#">退出</a></li>
+                    <li><a href="#" onclick="managerSignout()">退出</a></li>
                 </ul>
             </div>
         </div>
@@ -38,11 +37,11 @@
         <div class="row">
             <div class="col-sm-3 col-md-2 sidebar">
                 <ul class="nav nav-sidebar">
-                    <li class="active"><a href="#">主页</a></li>
+                    <li class="active"><a href="#" onclick="getMain()">主页</a></li>
                     <li><a href="#" onclick="getBookList()">书籍目录</a></li>
                     <li><a href="#" onclick="getAuthorList()">作者目录</a></li>
-                    <li><a href="#">种类目录</a></li>
-                    <li><a href="#">书籍实例目录</a></li>
+                    <li><a href="#" onclick="getGenreList()">种类目录</a></li>
+                    <li><a href="#" onclick="getBookInstanceList()">书籍实例目录</a></li>
                 </ul>
                 <ul class="nav nav-sidebar">
                     <li><a href="#">新建作者</a></li>
@@ -61,28 +60,47 @@
     <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="/node_modules/art-template/lib/template-web.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('.nav li').click(function () {
-                if ($(this).hasClass('active')) return;
-                $('.active').removeClass('active');
-                $(this).addClass('active');
-            })
-            //拉取数据
-            $.ajax({
-                url: '/catalog',
-                type: 'get',
-                success: function (data) {
-                    console.log(data);
-                }
-            })
-            
-        })
-        function test() {
-            event.preventDefault();
-            console.log('hahaha')
-        }
+    <script id="main" type="text/template">
+        <h1>欢迎来到图书馆主页</h1>
+        <ul>
+            <li class="strong">书籍数量：{{data.book_count}}</li>
+            <li class="strong">书籍副本数量：{{data.book_instance_count}}</li>
+            <li class="strong">可借阅数量：{{data.book_instance_available_count}}</li>
+            <li class="strong">作者数量：{{data.author_count}}</li>
+            <li class="strong">种类数量：{{data.genre_count}}</li>
+        </ul>
     </script>
+
+    <!-- 书列表 -->
+    <script id="book_list" type="text/template">
+        <h1>书籍目录</h1>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>书名</th>
+                    <th>作者</th>
+                    <th>书号</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {{each data}}
+                    <tr>
+                        <td>{{$value.title}}</td>
+                        <td>{{$value.author.family_name + $value.author.first_name}}</td>
+                        <td>{{$value.isbn}}</td>
+                        <td><button class="btn btn-primary">修改</button>
+                            <button class="btn btn-warning">删除</button>
+                        </td>
+                    </tr>
+                {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </script>
+
+    <script src="/public/js/manager.js"></script>
 </body>
+
 
 </html>

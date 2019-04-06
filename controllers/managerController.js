@@ -9,5 +9,11 @@ exports.signin = (req, res, next) => {
             status: 2//失败
         })
     }
+}
 
+exports.signout = (req, res, next) => {
+    req.session.manager = null;
+    res.json({
+        status: 1
+    })
 }

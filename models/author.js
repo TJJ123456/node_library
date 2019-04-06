@@ -21,7 +21,10 @@ AuthorSchema
 AuthorSchema
     .virtual('lifespan')
     .get(function () {
-        return (this.date_of_death.getYear() - this.date_of_birth.getYear()).toString();
+        if (this.date_of_death && this.date_of_birth)
+            return (this.date_of_death.getYear() - this.date_of_birth.getYear()).toString();
+        else
+            return '未知'
     });
 
 // 虚拟属性'url'：作者 URL

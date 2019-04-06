@@ -5,14 +5,14 @@ const BookInstanceModel = require('../models/bookinstance');
 //显示完整的作者列表
 exports.author_list = (req, res, next) => {
     //按名字排序
-    AuthorModel.Author.find().then((result) => {
+    AuthorModel.find().then((result) => {
         result.sort((a, b) => a.family_name > b.family_name);
         console.log(result);
-        // res.render('author_list.html', {
-        //     title: 'Author List',
-        //     author_list: result
-        // });
-        res.send('作者列表');
+        res.render('author_list.html', {
+            author_list: result
+        });
+        // res.json({ result });
+
     }).catch(next);
 };
 

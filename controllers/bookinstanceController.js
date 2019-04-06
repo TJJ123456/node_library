@@ -1,19 +1,17 @@
 const BookInstanceModel = require('../models/bookinstance');
 const BookModel = require('../models/book');
+const moment = require('moment');
 
 //获取书本实例信息
 exports.bookinstance_list = function (req, res, next) {
-    BookInstanceModel.find().populate('book').then(result => {
+    BookInstanceModel.find().populate('book').lean().then(result => {
         console.log(result);
-        let data = JSON.stringify(result);
-        data = JSON.parse(data);
+        result.forEach(item => {
+            item.due_back_formatted = moment(item.due_back).format('MMMM Do, YYYY');
+        })
         res.render('bookinstance_list.html', {
-            bookinstance_list: data
-        });
-        // res.send({
-        //     bookinstance_list: result
-        // })
-        // res.send('信息太大了不发了');
+                book_list: result
+            });
     }).catch(next);
 }
 
@@ -38,6 +36,9 @@ exports.bookinstance_create_get = function (req, res, next) {
         //     title: 'Create BookInstance',
         //     book_list: books
         // });
+        res.json({
+            result
+        })
     }).catch(next);
 }
 

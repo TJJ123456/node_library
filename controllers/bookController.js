@@ -40,12 +40,9 @@ exports.index = function (req, res, next) {
 
 //展示所有书本
 exports.book_list = function (req, res, next) {
-    BookModel.find({}, 'title author').populate('author').then(result => {
-        // console.log(result);
-        // res.send('书本列表');
-        res.render('book_list.html', {
-            title: 'Book List',
-            books: result
+    BookModel.find().populate('author').then(result => {
+        res.json({
+            result
         })
     }).catch(next)
 }

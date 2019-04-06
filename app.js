@@ -8,6 +8,7 @@ const flash = require('connect-flash')
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const catalogRouter = require('./routes/catalog');  // 导入 catalog 路由
+const managerCheckLogin = require('./check/managerCheck').checkLogin;
 
 const app = express();
 const mongoose = require('mongoose');
@@ -25,9 +26,6 @@ app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use('/node_modules', express.static(path.join(__dirname, 'node_modules')));
 app.use(express.static(path.join(__dirname, 'views')));
 
-//设置管理员目录
-app.use('/manager', express.static(path.join(__dirname, 'public/managerviews')));
-
 app.use(session({
     name: 'nlibrary',
     secret: 'nlibrary',
@@ -40,6 +38,9 @@ app.use(session({
         url: mongoDB
     })
 }))
+//设置管理员目录
+app.use('/manager', express.static(path.join(__dirname, 'public/managerviews')));
+
 
 app.use(flash());
 app.use(function (req, res, next) {
@@ -54,7 +55,7 @@ app.use(cookieParser());
 
 app.use('/', indexRouter);
 // app.use('/users', usersRouter);
-const managerCheckLogin = require('./check/managerCheck').checkLogin;
+
 app.use('/catalog', managerCheckLogin, catalogRouter);  // 管理员权限导航
 
 app.listen(3000, function () {

@@ -5,11 +5,10 @@ const BookModel = require('../models/book');
 exports.genre_list = function (req, res, next) {
     GenreModel.find().then(result => {
         console.log(result);
-        res.send('这是种类列表');
-        // res.render('genre_list', {
-        //     title: 'Genre List',
-        //     list_genres: list_genres
-        // });
+        // res.send('这是种类列表');
+        res.render('genre_list.html', {
+            list_genres: result
+        });
     })
 }
 
