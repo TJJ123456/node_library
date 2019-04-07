@@ -1,5 +1,6 @@
 <h1>种类信息</h1>
 <div class="table-responsive">
+
     <table class="table table-striped">
         <thead>
             <tr>
@@ -10,8 +11,10 @@
             {{each list_genres}}
             <tr>
                 <td>{{$value.name}}</td>
-                <td><button class="btn btn-primary">修改</button>
-                    <button class="btn btn-warning">删除</button>
+                <td>
+                    <button class="btn btn-primary" onclick="updateGenreGet(`{{$value.id}}`)">修改</button>
+                    <button class="btn btn-info" onclick="detailGenreGet(`{{$value.id}}`)">详情</button>
+                    <button class="btn btn-warning" onclick="deleteGenreGet(`{{$value.id}}`)">删除</button>
                 </td>
             </tr>
             {{/each}}

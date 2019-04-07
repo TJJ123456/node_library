@@ -44,13 +44,16 @@
                     <li><a href="#" onclick="getBookInstanceList()">书籍实例目录</a></li>
                 </ul>
                 <ul class="nav nav-sidebar">
-                    <li><a href="#">新建作者</a></li>
-                    <li><a href="#">新建种类</a></li>
-                    <li><a href="#">新建书本</a></li>
+                    <li><a href="#" onclick="createAuthorGet()">新建作者</a></li>
+                    <li><a href="#" onclick="createGenre()">新建种类</a></li>
+                    <li><a href="#" onclick="createBookGet()">新建书本</a></li>
                     <li><a href="#">增加书本实例</a></li>
                 </ul>
             </div>
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                <div id="error">
+                    <p class="text-warning text-left"></p>
+                </div>
                 <div id="content"></div>
             </div>
 
@@ -73,30 +76,7 @@
 
     <!-- 书列表 -->
     <script id="book_list" type="text/template">
-        <h1>书籍目录</h1>
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th>书名</th>
-                    <th>作者</th>
-                    <th>书号</th>
-                </tr>
-                </thead>
-                <tbody>
-                    {{each data}}
-                    <tr>
-                        <td>{{$value.title}}</td>
-                        <td>{{$value.author.family_name + $value.author.first_name}}</td>
-                        <td>{{$value.isbn}}</td>
-                        <td><button class="btn btn-primary">修改</button>
-                            <button class="btn btn-warning">删除</button>
-                        </td>
-                    </tr>
-                {{/each}}
-                </tbody>
-            </table>
-        </div>
+        
     </script>
 
     <script src="/public/js/manager.js"></script>

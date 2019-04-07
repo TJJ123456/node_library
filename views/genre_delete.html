@@ -1,0 +1,26 @@
+<h1>删除种类</h1>
+<h2>删除种类之前请删除相关书籍</h2>
+{{if genre_books}}
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>书名</th>
+                <th>作者</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{each genre_books}}
+            <tr>
+                <td>{{$value.title}}</td>
+                <td>{{$value.author.family_name + $value.author.first_name}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+{{else}}
+<h2>无</h2>
+{{/if}}
+<h3 class="text-danger">确定要删除这个种类吗？</h3>
+<button class="btn btn-info" onclick="deleteGenrePost(`{{genre.id}}`)">删除</button>

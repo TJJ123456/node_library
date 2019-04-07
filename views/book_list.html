@@ -1,13 +1,30 @@
-{{extend './manager/layout.html'}}
-
-{{block 'content'}}
-<h1>书本列表</h1>
-<ul>
-    {{each books}}
-    <li class="strong">
-        <a href="{{$value.url}}">{{$value.title}}</a>
-        {{$value.author.name}}
-    </li>
-    {{/each}}
-</ul>
-{{/block}}
+<h1>书籍目录</h1>
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>书名</th>
+                <th>作者</th>
+                <th>书号</th>
+                <th>类别</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{each data}}
+            <tr>
+                <td>{{$value.title}}</td>
+                <td>{{$value.author.family_name + $value.author.first_name}}</td>
+                <td>{{$value.isbn}}</td>
+                <td>
+                    {{each $value.genre}}
+                    <label for="">{{$value.name}}</label>
+                    {{/each}}
+                </td>
+                <td><button class="btn btn-primary">修改</button>
+                    <button class="btn btn-warning">删除</button>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>

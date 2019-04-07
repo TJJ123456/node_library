@@ -40,10 +40,8 @@ exports.index = function (req, res, next) {
 
 //展示所有书本
 exports.book_list = function (req, res, next) {
-    BookModel.find().populate('author').then(result => {
-        res.json({
-            result
-        })
+    BookModel.find().populate('author').populate('genre').lean().then(result => {
+        res.render('book_list.html', { data: result });
     }).catch(next)
 }
 
@@ -79,29 +77,30 @@ exports.book_create_get = function (req, res, next) {
     ]).then(result => {
         const authors = result[0];
         const genres = result[1];
-        // res.render('book_form', {
-        //     title: 'Create Book',
-        //     authors: authors,
-        //     genres: genres
-        // });
-        console.log('书本和种类');
-        console.log(authors);
-        console.log(genres);
-        res.send('书本和种类');
-    }).catch(next);
+        res.render('book_create.html', {
+            authors: authors,
+            genres: genres
+        });
+    }).catch(e => {
+        res.json({
+            error: true,
+            msg: e.message
+        })
+    });
 }
 
 exports.book_create_post = function (req, res, next) {
-    if (!(req.fields.genre instanceof Array)) {
-        if (typeof req.fields.genre === 'undefined')
-            req.fields.genre = [];
+    if (!(req.body.genre instanceof Array)) {
+        if (typeof req.body.genre === 'undefined')
+            req.body.genre = [];
         else
-            req.fields.genre = new Array(req.fields.genre);
+            req.body.genre = new Array(req.body.genre);
     }
-    const title = req.fields.title.trim();
-    const author = req.fields.author.trim();
-    const summary = req.fields.summary.trim();
-    const isbn = req.fields.isbn.trim();
+    const title = req.body.title.trim();
+    const author = req.body.author.trim();
+    const summary = req.body.summary.trim();
+    const isbn = req.body.isbn.trim();
+    const genre = req.body.genre;
 
     //数据校验
     try {
@@ -118,8 +117,10 @@ exports.book_create_post = function (req, res, next) {
             throw new Error('书号不能为空')
         }
     } catch (e) {
-        req.flash('error', e.message)
-        return res.redirect('back');
+        return res.json({
+            error: true,
+            msg: e.message
+        })
     }
     const book = {
         title: title,
@@ -131,7 +132,12 @@ exports.book_create_post = function (req, res, next) {
     BookModel.create(book).then(result => {
         console.log(result);
         res.send('创建书本成功');
-    }).catch(next);
+    }).catch(e => {
+        return res.json({
+            error: true,
+            msg: e.message
+        })
+    });
 }
 
 //删除书本页面

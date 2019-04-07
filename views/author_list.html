@@ -1,4 +1,4 @@
-<h1>书籍实例</h1>
+<h1>作者列表</h1>
 <div class="table-responsive">
     <table class="table table-striped">
         <thead>
@@ -12,8 +12,9 @@
             <tr>
                 <td>{{$value.name}}</td>
                 <td>{{$value.lifespan}}</td>
-                <td><button class="btn btn-primary">修改</button>
-                    <button class="btn btn-warning">删除</button>
+                <td><button class="btn btn-primary" onclick="updateAuthorGet(`{{$value.id}}`)">修改</button>
+                    <button class="btn btn-info" onclick="detailAuthorGet(`{{$value.id}}`)">详情</button>
+                    <button class="btn btn-warning" onclick="deleteAuthorGet(`{{$value.id}}`)">删除</button>
                 </td>
             </tr>
             {{/each}}

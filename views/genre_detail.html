@@ -1,0 +1,26 @@
+<h1>种类：{{genre.name}}</h1>
+<h2>相关书籍</h2>
+{{if genre_books.length}}
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>书名</th>
+                <th>作者</th>
+                <th>摘要</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{each genre_books}}
+            <tr>
+                <td>{{$value.title}}</td>
+                <td>{{$value.author.family_name + $value.author.first_name}}</td>
+                <td>{{$value.summary}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+{{else}}
+<h2>无</h2>
+{{/if}}

@@ -32,7 +32,7 @@ app.use(session({
     resave: true, //强制更新
     saveUninitialized: false,//强制创建session
     cookie: {
-        maxAge: 3600 * 24 * 60,//一天？
+        maxAge: 1000 * 60 * 24 * 60,//一天？
     },
     store: new MongoStore({
         url: mongoDB

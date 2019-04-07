@@ -1,0 +1,30 @@
+<h1>作者信息</h1>
+<h1>删除作者前请先删除相关书籍</h1>
+<h3>{{author.name}}</h3>
+<h6>出生日期: {{author.date_of_birth || '未知'}}</h6>
+<h6>逝世日期：{{author.date_of_death || '未知'}}</h6>
+<h6>相关书籍：</h6>
+{{if author_books.length}}
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>书名</th>
+                <th>作者</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{each author_books}}
+            <tr>
+                <td>{{$value.title}}</td>
+                <td>{{$value.author.family_name + $value.author.first_name}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+{{else}}
+<h2>无</h2>
+{{/if}}
+<h3 class="text-danger">确定要删除这个作者吗？</h3>
+<button class="btn btn-info" onclick="deleteAuthorPost(`{{author.id}}`)">删除</button>
