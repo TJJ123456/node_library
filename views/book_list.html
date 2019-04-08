@@ -20,7 +20,9 @@
                     <label for="">{{$value.name}}</label>
                     {{/each}}
                 </td>
-                <td><button class="btn btn-primary">修改</button>
+                <td>
+                    <button class="btn btn-primary">修改</button>
+                    <button class="btn btn-info" onclick="detailAuthorGet(`{{$value.id}}`)">详情</button>
                     <button class="btn btn-warning">删除</button>
                 </td>
             </tr>

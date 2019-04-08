@@ -60,12 +60,11 @@ exports.book_detail = function (req, res, next) {
         console.log(book);
         console.log(book_instance);
         res.send('书本详细信息')
-        // res.render('book_detail',
-        //     {
-        //         title: 'Title',
-        //         book: book,
-        //         book_instances: book_instance
-        //     });
+        res.render('book_detail.html',
+            {
+                book: book,
+                book_instances: book_instance
+            });
     }).catch(next);
 }
 

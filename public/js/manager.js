@@ -30,6 +30,7 @@ function managerSignout() {
     })
 }
 
+//书本列表
 function getBookList() {
     event.preventDefault();
     $.ajax({
@@ -351,6 +352,25 @@ function createBookGet() {
 
 //创建书本请求
 function createBookPost() {
+    event.preventDefault();
+    let data = $('#genre_form').serializeArray();
+    console.log(data);
+    $.ajax({
+        url: `/catalog/book/create`,
+        type: 'post',
+        data: data,
+        success: function (data) {
+            if (data.error) {
+                $('#error p').html(data.msg);
+            } else {
+                $('#content').html(data);
+            }
+        }
+    })
+}
+
+//书本细节
+function createBookGet() {
     event.preventDefault();
     let data = $('#genre_form').serializeArray();
     console.log(data);

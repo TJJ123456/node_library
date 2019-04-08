@@ -1,0 +1,10 @@
+<h1>书籍详细信息</h1>
+<p>书名：{{book.title}}</p>
+<p>作者：{{book.author.family_name + $value.author.first_name}}</p>
+<p>摘要：{{book.title}}</p>
+<p>isbn：{{book.title}}</p>
+<p>种类：
+    {{ each book.genre  }}
+    {{$value ,}}
+    {{ /each}}
+</p>
