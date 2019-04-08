@@ -10,6 +10,7 @@
 </p>
 <p>相关书籍：</p>
 {{if book_instances.length}}
+<p class="text-danger">删除书籍之前请删除相关实例</p>
 <div class="table-responsive">
     <table class="table table-striped">
         <thead>
@@ -33,3 +34,5 @@
 {{else}}
 <p>无</p>
 {{/if}}
+<h3 class="text-danger">确定要删除这个书籍吗？</h3>
+<button class="btn btn-info" onclick="deleteBookPost(`{{book._id}}`)">删除</button>

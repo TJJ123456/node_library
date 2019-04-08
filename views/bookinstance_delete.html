@@ -1,0 +1,13 @@
+<h1>书籍实例信息</h1>
+<p>书名：{{bookinstance.book.title}}</p>
+<p>出版社：{{bookinstance.imprint}}</p>
+<p>状态：{{bookinstance.status}}</p>
+<p>还书日期：
+    {{if bookinstance.due_back}}
+    {{bookinstance.due_back}}
+    {{else}}
+    无
+    {{/if}}
+</p>
+<p class="text-warning">确定要删除这个实例吗</p>
+<button class="btn btn-info" onclick="deleteBookInstancePost(`{{bookinstance._id}}`)">删除</button>

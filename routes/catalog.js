@@ -30,7 +30,7 @@ router.get('/book/:id/update', book_controller.book_update_get);
 // POST 请求更新藏书
 router.post('/book/:id/update', book_controller.book_update_post);
 
-// GET 请求藏书
+// GET 请求藏书细节
 router.get('/book/:id', book_controller.book_detail);
 
 // GET 请求完整藏书列表

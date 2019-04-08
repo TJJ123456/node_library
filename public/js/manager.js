@@ -370,14 +370,147 @@ function createBookPost() {
 }
 
 //书本细节
-function createBookGet() {
+function detailBookGet(id) {
     event.preventDefault();
-    let data = $('#genre_form').serializeArray();
-    console.log(data);
+    id = id.replace(/\"/g, '');
     $.ajax({
-        url: `/catalog/book/create`,
+        url: `/catalog/book/${id}`,
+        type: 'get',
+        success: function (data) {
+            if (data.error) {
+                $('#error p').html(data.msg);
+            } else {
+                $('#content').html(data);
+            }
+        }
+    })
+}
+
+//删除书本请求
+function deleteBookGet(id) {
+    event.preventDefault();
+    id = id.replace(/\"/g, '');
+    $.ajax({
+        url: `/catalog/book/${id}/delete`,
+        type: 'get',
+        success: function (data) {
+            if (data.error) {
+                $('#error p').html(data.msg);
+            } else {
+                $('#content').html(data);
+            }
+        }
+    })
+}
+
+//删除书本请求
+function deleteBookPost(id) {
+    event.preventDefault();
+    id = id.replace(/\"/g, '');
+    $.ajax({
+        url: `/catalog/book/${id}/delete`,
+        type: 'post',
+        success: function (data) {
+            if (data.error) {
+                $('#error p').html(data.msg);
+            } else {
+                $('#content').html(data);
+            }
+        }
+    })
+}
+
+//修改书本页面
+function updateBookget(id) {
+    event.preventDefault();
+    id = id.replace(/\"/g, '');
+    $.ajax({
+        url: `/catalog/book/${id}/update`,
+        type: 'get',
+        success: function (data) {
+            if (data.error) {
+                $('#error p').html(data.msg);
+            } else {
+                $('#content').html(data);
+            }
+        }
+    })
+}
+
+//创建书本实例
+function createBookInstanceGet() {
+    event.preventDefault();
+    $.ajax({
+        url: `/catalog/bookinstance/create`,
+        type: 'get',
+        success: function (data) {
+            if (data.error) {
+                $('#error p').html(data.msg);
+            } else {
+                $('#content').html(data);
+            }
+        }
+    })
+}
+
+//创建书本实例请求
+function createBookInstancePost() {
+    event.preventDefault();
+    let data = $('#bookinstance_form').serializeArray();
+    $.ajax({
+        url: `/catalog/bookinstance/create`,
         type: 'post',
         data: data,
+        success: function (data) {
+            if (data.error) {
+                $('#error p').html(data.msg);
+            } else {
+                $('#content').html(data);
+            }
+        }
+    })
+}
+
+//书本实例详情请求
+function detailBookInstanceGet(id) {
+    event.preventDefault();
+    id = id.replace(/\"/g, '');
+    $.ajax({
+        url: `/catalog/bookinstance/${id}`,
+        type: 'get',
+        success: function (data) {
+            if (data.error) {
+                $('#error p').html(data.msg);
+            } else {
+                $('#content').html(data);
+            }
+        }
+    })
+}
+
+//书本实例删除请求
+function deleteBookInstanceGet(id) {
+    event.preventDefault();
+    id = id.replace(/\"/g, '');
+    $.ajax({
+        url: `/catalog/bookinstance/${id}/delete`,
+        type: 'get',
+        success: function (data) {
+            if (data.error) {
+                $('#error p').html(data.msg);
+            } else {
+                $('#content').html(data);
+            }
+        }
+    })
+}
+//书本实例删除请求
+function deleteBookInstancePost(id) {
+    event.preventDefault();
+    id = id.replace(/\"/g, '');
+    $.ajax({
+        url: `/catalog/bookinstance/${id}/delete`,
+        type: 'post',
         success: function (data) {
             if (data.error) {
                 $('#error p').html(data.msg);

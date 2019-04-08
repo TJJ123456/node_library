@@ -16,8 +16,9 @@
                 <td>{{$value.imprint}}</td>
                 <td>{{$value.status}}</td>
                 <td>{{$value.due_back_formatted}}</td>
-                <td><button class="btn btn-primary">修改</button>
-                    <button class="btn btn-warning">删除</button>
+                <td>
+                    <button class="btn btn-info" onclick="detailBookInstanceGet(`{{$value._id}}`)">详情</button>
+                    <button class="btn btn-warning" onclick="deleteBookInstanceGet(`{{$value._id}}`)">删除</button>
                 </td>
             </tr>
             {{/each}}

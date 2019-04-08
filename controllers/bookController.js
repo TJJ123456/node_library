@@ -49,7 +49,7 @@ exports.book_list = function (req, res, next) {
 exports.book_detail = function (req, res, next) {
     const bookId = req.params.id;
     Promise.all([
-        BookModel.findById(bookId).populate('author').populate('genre'),
+        BookModel.findById(bookId).populate('author').populate('genre').lean(),
         BookInstanceModel.find({ book: bookId })
     ]).then(result => {
         const book = result[0];
@@ -57,9 +57,6 @@ exports.book_detail = function (req, res, next) {
         if (!book) {
             throw new Error('没这个书');
         }
-        console.log(book);
-        console.log(book_instance);
-        res.send('书本详细信息')
         res.render('book_detail.html',
             {
                 book: book,
@@ -130,7 +127,7 @@ exports.book_create_post = function (req, res, next) {
     };
     BookModel.create(book).then(result => {
         console.log(result);
-        res.send('创建书本成功');
+        return res.redirect(result.url);
     }).catch(e => {
         return res.json({
             error: true,
@@ -143,16 +140,19 @@ exports.book_create_post = function (req, res, next) {
 exports.book_delete_get = function (req, res, next) {
     const bookId = req.params.id;
     Promise.all([
-        BookModel.findById(bookId).populate('author').populate('genre'),
+        BookModel.findById(bookId).populate('author').populate('genre').lean(),
         BookInstanceModel.find({ book: bookId })
     ]).then(result => {
         const book = result[0];
         const book_bookinstances = result[1];
         if (!book) { // 没有书
-            res.redirect('/catalog/books');
+            // res.redirect('/catalog/books');
+            res.json({
+                error: true,
+                msg: '书籍错误'
+            })
         }
-        res.render('book_delete', {
-            title: 'Delete Book',
+        res.render('book_delete.html', {
             book: book,
             book_instances: book_bookinstances
         });
@@ -169,12 +169,10 @@ exports.book_delete_post = (req, res, next) => {
         const book = result[0];
         const book_bookinstances = result[1];
         if (book_bookinstances.length > 0) {
-            res.render('book_delete', {
-                title: 'Delete Book',
-                book: book,
-                book_instances: book_bookinstances
+            return res.json({
+                error: true,
+                msg: '请先删除相关书籍实例'
             });
-            return;
         } else {
             BookModel.findByIdAndRemove(bookId).then(result => {
                 res.redirect('/catalog/books');
@@ -187,7 +185,7 @@ exports.book_delete_post = (req, res, next) => {
 exports.book_update_get = function (req, res, next) {
     const bookId = req.params.id;
     Promise.all([
-        BookModel.findById(bookId).populate('author').populate('genre'),
+        BookModel.findById(bookId).populate('author').populate('genre').lean(),
         AuthorModel.find(),
         GenreModel.find()
     ]).then(result => {
@@ -200,12 +198,11 @@ exports.book_update_get = function (req, res, next) {
         genres.forEach((genre, index) => {
             book.genre.forEach((bookgenre) => {
                 if (bookgenre._id.toString() === genre._id.toString()) {
-                    genre.checked = 'true';
+                    genre.checked = true;
                 }
             })
         })
-        res.render('book_form', {
-            title: 'Update Book',
+        res.render('book_update.html', {
             authors: authors,
             genres: genres,
             book: book
@@ -214,17 +211,17 @@ exports.book_update_get = function (req, res, next) {
 }
 
 exports.book_update_post = function (req, res, next) {
-    if (!(req.fields.genre instanceof Array)) {
-        if (typeof req.fields.genre === 'undefined')
-            req.fields.genre = [];
+    if (!(req.body.genre instanceof Array)) {
+        if (typeof req.body.genre === 'undefined')
+            req.body.genre = [];
         else
-            req.fields.genre = new Array(req.fields.genre);
+            req.body.genre = new Array(req.fields.genre);
     }
 
-    const title = req.fields.title.trim();
-    const author = req.fields.author.trim();
-    const summary = req.fields.summary.trim();
-    const isbn = req.fields.isbn.trim();
+    const title = req.body.title.trim();
+    const author = req.body.author.trim();
+    const summary = req.body.summary.trim();
+    const isbn = req.body.isbn.trim();
 
     //数据校验
     try {
@@ -254,7 +251,7 @@ exports.book_update_post = function (req, res, next) {
         _id: req.params.id // 
     }
     BookModel.findByIdAndUpdate(bookId, book).then(result => {
-        console.log(result);
-        res.send('更新书本成功');
+        // res.send('更新书本成功');
+        res.redirect(result.url);
     })
 }
